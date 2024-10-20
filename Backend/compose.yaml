@@ -1,0 +1,22 @@
+services:
+  db:
+    image:
+      postgres
+    environment:
+      POSTGRES_PASSWORD: /run/secrets/postgres_pwd
+    secrets:
+      - postgres_pwd
+  
+  interface:
+    build:
+      interface
+    ports:
+      - "3000:8000"
+# once I configure a proper healthcheck or something for the db, add the following:
+#    depends_on:
+#      db:
+#        condition: service_healthy
+
+secrets:
+  postgres_pwd:
+    file: ./postgres/pwd.txt
