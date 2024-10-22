@@ -3,3 +3,6 @@
 
 # Secrets
 pwd.txt
+
+# Cargo build directories
+target
