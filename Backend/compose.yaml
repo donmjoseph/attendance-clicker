@@ -3,20 +3,24 @@ services:
     image:
       postgres
     environment:
-      POSTGRES_PASSWORD: /run/secrets/postgres_pwd
-    secrets:
-      - postgres_pwd
+      POSTGRES_PASSWORD: password1
+      POSTGRES_USER: admin
+      POSTGRES_DB: admin
+    restart: always
   
   interface:
     build:
       interface
     ports:
       - "3000:3000"
+    restart: always
 # once I configure a proper healthcheck or something for the db, add the following:
 #    depends_on:
 #      db:
 #        condition: service_healthy
 
-secrets:
-  postgres_pwd:
-    file: ./postgres/pwd.txt
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
