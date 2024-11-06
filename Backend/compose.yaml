@@ -6,6 +6,10 @@ services:
       POSTGRES_PASSWORD: password1
       POSTGRES_USER: admin
       POSTGRES_DB: admin
+    ports:
+      - "6500:5432"  # running on port 5432, mapped to 6500
+    volumes:
+      - progresDB:/var/lib/postgresql/data
     restart: always
   
   interface:
@@ -18,9 +22,18 @@ services:
 #    depends_on:
 #      db:
 #        condition: service_healthy
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: pgAdmin
+    env_file:
+      - ./.env
+    ports:
+      - "5050:80"  # running on port 80, mapped to 5050
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+volumes:
+  progresDB: 
