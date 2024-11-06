@@ -1,3 +1,5 @@
+NOTICE: package-lock.json and package.json have been deleted, so project wont work. Waiting until Calvin has working Bulma, then he will push the package files to the github.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
