@@ -11,18 +11,18 @@ async fn main() {
         .route("/ea-sports", get(in_the_game)); // i have brainrot
 
     // gets a listener for port 3000
-    let listener = tokio::net::TcpListener::bind("localhost:3000")
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
         .await
         .unwrap();
 
-    println!("Starting backend...");
+    println!("Starting backend... once more");
 
     // bind the address and start the server
     axum::serve(listener, app.into_make_service()).await.unwrap();
 }
 
 async fn handle_hello() -> String {
-    "Hello, World!".to_string()
+    "Hello, World!!!!!!".to_string()
 }
 
 async fn handle_goodbye() ->  String {
