@@ -1,12 +1,19 @@
 mod schema;
 
 use axum::{routing::get, Router};
+use dotenv::dotenv;
 
 #[tokio::main]
 async fn main() {
+    dotenv().ok();
+
+    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    println!("database url: {}", database_url);
+
     // creates a handler that routes 
     let app = Router::new()
         .route("/", get(handle_hello))
+        .route("/database_url", get(database_url))
         .route("/goodbye", get(handle_goodbye))
         .route("/ea-sports", get(in_the_game)); // i have brainrot
 

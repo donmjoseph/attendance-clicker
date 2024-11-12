@@ -16,6 +16,8 @@ services:
       context: ./interface
     ports:
       - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://admin:password1@localhost:6500/rust_sqlx?schema=public
     volumes:
       - ./interface:/usr/src/interface  # Mounts local code as a volume for hot-reload
     restart: always
