@@ -3,6 +3,7 @@
 
 # Secrets
 pwd.txt
+.env
 
 # Cargo build directories
 target

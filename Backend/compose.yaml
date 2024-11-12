@@ -1,26 +1,32 @@
 services:
   db:
-    image:
-      postgres
+    image: postgres
     environment:
       POSTGRES_PASSWORD: password1
       POSTGRES_USER: admin
       POSTGRES_DB: admin
+    ports:
+      - "6500:5432"
+    volumes:
+      - progresDB:/var/lib/postgresql/data
     restart: always
-  
+
   interface:
     build:
-      interface
+      context: ./interface
     ports:
       - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://admin:password1@localhost:6500/rust_sqlx?schema=public
+    volumes:
+      - ./interface:/usr/src/interface  # Mounts local code as a volume for hot-reload
     restart: always
-# once I configure a proper healthcheck or something for the db, add the following:
-#    depends_on:
-#      db:
-#        condition: service_healthy
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+
+volumes:
+  progresDB:

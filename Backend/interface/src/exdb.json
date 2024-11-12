@@ -1,0 +1,55 @@
+{
+    "users": [
+        {
+            "user_id": "011881121",
+            "user_name": "Logan Meyers",
+            "current_classes": [
+                "econs 102",
+                "physics"
+            ],
+            "past_class": [
+                "not chem"
+            ]
+        },
+        {
+            "user_id": "012343210",
+            "user_name": "Timothy",
+            "current_classes": [
+                "chem",
+                "projectchickenspace"
+            ]
+        }
+    ],
+    "classes": [
+        {
+            "name": "econs 102",
+            "class_id": "34895674",
+            "professor": "A. Prera",
+            "Dates": [
+                "10/21", "10/23", "10/25"
+            ],
+            "Polls": [
+                {
+                    "Date": "10/21",
+                    "Screenshot": "/resources/econs102/poll_10212024",
+                    "Responses": [
+                        {
+                            "user_id": "011881121",
+                            "response": "A"
+                        },
+                        {
+                            "user_id": "011223344",
+                            "response": "B"
+                        }
+                    ],
+                    "Correct Responses": [
+                        "A", "C"
+                    ]
+                }
+            ],
+            "registered_users_ids": [
+                "011881121", "011223344", "000000001"
+            ]
+        }
+    ]
+}
