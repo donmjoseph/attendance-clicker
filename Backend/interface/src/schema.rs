@@ -1,7 +1,8 @@
-// use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
-// #[derive(Serialize, Deserialize, Debug)]
-// pub struct Banana {
-//     name: i32,
-//     beskfbsejkgbg
-// }
+#[derive(Serialize, Deserialize, Debug)]
+pub struct StudentAccessSchema {
+    pub id: i64,
+    pub name: String,
+    pub inscure_password: String
+}
