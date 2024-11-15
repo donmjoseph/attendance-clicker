@@ -12,3 +12,4 @@ get students answer for question
 get correct answer for question
 get histogram data [3a 5b 7c 10d 100e]
 
+according to my tests, creating a database and table, then composing down and composing up, will still keep the database and table. This is good to know
