@@ -6,3 +6,5 @@ pwd.txt
 
 # Cargo build directories
 target
+
+node_modules
