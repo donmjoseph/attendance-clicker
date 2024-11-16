@@ -1,0 +1,14 @@
+v1/healthcheck
+v2/newbreakingchange
+
+get_class_average()
+- front end heavy
+    - "answers": [a, , c, d, a,e b, c, a, c]
+    - "correct": A
+- back end heavy
+    - "average": 
+
+get students answer for question
+get correct answer for question
+get histogram data [3a 5b 7c 10d 100e]
+

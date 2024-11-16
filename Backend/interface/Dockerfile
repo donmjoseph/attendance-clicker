@@ -1,14 +1,22 @@
-# starting from rust:alpine
+# Use rust:alpine as the base image to have Cargo available in the runtime
 FROM rust:alpine3.20 as builder
-# doing everything inside a specific directory, we don't want to have an unreadable filesystem
+
+# Set the working directory inside the container
 WORKDIR /usr/src/interface
 
-RUN apk update --no-cache
-RUN apk upgrade --no-cache
-RUN apk add build-base
-# copying everything from the current directory into /interface in the docker container
+# Install dependencies
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --no-cache build-base
+
+# Copy the entire source code (this includes Cargo.toml, Cargo.lock, and source files)
 COPY . .
 
-RUN cargo install --path .
+# Fetch dependencies (this will now work since the source code is available)
+RUN cargo fetch
+
+# Expose the necessary port
 EXPOSE 3000
-CMD ["interface"]
+
+# Command to start the application
+CMD ["cargo", "run"]

@@ -3,8 +3,10 @@
 
 # Secrets
 pwd.txt
+.env
 
 # Cargo build directories
 target
 
+# node modules
 node_modules
