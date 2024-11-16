@@ -17,10 +17,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://admin:password1@localhost:6500/rust_sqlx?schema=public
+      - DATABASE_URL=postgres://admin:password1@db:5432/admin
     volumes:
       - ./interface:/usr/src/interface  # Mounts local code as a volume for hot-reload
     restart: always
+    # add healthcheck for database ?
 
   adminer:
     image: adminer
