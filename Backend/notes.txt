@@ -1,5 +1,5 @@
-v1/healthcheck
-v2/newbreakingchange
+now-deprecated api endpoint: v1/healthcheck
+endpoint with breaking change: v2/newbreakingchange
 
 get_class_average()
 - front end heavy
