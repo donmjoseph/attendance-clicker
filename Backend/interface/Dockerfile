@@ -5,9 +5,10 @@ FROM rust:alpine3.20 as builder
 WORKDIR /usr/src/interface
 
 # Install dependencies
+# openssl-dev and pkgconfig required for sqlx, I believe
 RUN apk update --no-cache && \
     apk upgrade --no-cache && \
-    apk add --no-cache build-base
+    apk add --no-cache build-base openssl-dev pkgconfig
 
 # Copy the entire source code (this includes Cargo.toml, Cargo.lock, and source files)
 COPY . .
