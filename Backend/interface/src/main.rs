@@ -1,5 +1,6 @@
 mod handler;
 mod schema;
+pub mod api_funcs;
 
 use sqlx::postgres::PgPoolOptions;  // Pool, Postgres
 use axum::{routing::get, Router};
