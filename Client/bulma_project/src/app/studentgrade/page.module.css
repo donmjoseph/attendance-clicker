@@ -1,0 +1,59 @@
+.page {
+    --gray-rgb: 0, 0, 0;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+  
+    --button-primary-hover: #383838;
+    --button-secondary-hover: #f2f2f2;
+  
+    display: flex;
+    flex-direction: column;
+    grid-template-rows: 20px 1fr 20px;
+    align-items: center;
+    justify-items: center;
+    height: 100vh;
+    padding: 40px;
+    gap: 20px;
+    font-family: var(--font-geist-sans);
+}
+
+.classname {
+  width: 1000px;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.grade {
+  width: 35%;
+  height: 65%;
+  gap: 20px;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  background-color: #24292E;
+  margin: 0 12px 24px 12px;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.gradeContent {
+  font-size: 25px;
+  font-weight: 700;
+  color: white;
+}
+
+.gradeBox {
+  width: 1250px;
+  height: 600px;
+  gap: 20px;
+  display: flex;
+  align-items: top;
+  padding: 10px;
+  justify-content: center;
+  overflow: hidden;
+}
+  
