@@ -1,32 +1,107 @@
 'use client'
-import Image from "next/image";
-import styles from "./page.module.css";
+import React, { useState } from 'react';
+import './LoginPage.module.css';
 import { useRouter } from "next/navigation";
 
-export default function Home() {
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+const LoginPage: React.FC = () => {
 
   const router = useRouter();
 
-  const goToClasses = () => {
+  const goToCourses= () => {
     router.push('/makePages');
-  }
+  }  
+  
+  const [formValues, setFormValues] = useState<LoginFormValues>({
+    email: '',
+    password: '',
+  });
+
+  const [errors, setErrors] = useState<LoginFormValues>({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const validate = (): boolean => {
+    let tempErrors: LoginFormValues = { email: '', password: '' };
+    let isValid = true;
+
+    if (!formValues.email) {
+      tempErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+      tempErrors.email = 'Email is invalid';
+      isValid = false;
+    }
+
+    if (!formValues.password) {
+      tempErrors.password = 'Password is required';
+      isValid = false;
+    } else if (formValues.password.length < 6) {
+      tempErrors.password = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validate()) {
+      console.log('Form data:', formValues);
+      // Handle successful login logic (e.g., API call)
+    }
+  };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.QNA}>
-        <div className={styles.leftsection}>
-          {/*<button className={styles.button} style={{
-            backgroundColor: '#32cd32'
-            }}
-          >
-          
-          </button>*/}
-          <button className={`button is-light ${styles.answerButton}`}>A</button>
-          <button className={`button is-light ${styles.answerButton}`}>B</button>
+    <div className="login-container">
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formValues.email}
+            onChange={handleInputChange}
+            className={errors.email ? 'error' : ''}
+          />
+          {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
-      <div className={styles.rightsection}></div>
-      </div>
-      <button className={`button is-light ${styles.submitButton}`} onClick={goToClasses}>Submit</button>
-      </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formValues.password}
+            onChange={handleInputChange}
+            className={errors.password ? 'error' : ''}
+          />
+          {errors.password && <div className="error-message">{errors.password}</div>}
+        </div>
+
+        <button onClick={goToCourses} /*type="submit" className="login-btn" */>
+          Login
+        </button>
+      </form>
+    </div>
   );
-}
+};
+
+export default LoginPage;
