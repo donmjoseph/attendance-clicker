@@ -10,7 +10,7 @@ export default function CheckedIn() {
     const router = useRouter();
 
     const handleBackToClasses = () => {
-        router.push('/');
+        router.push('/makePages');
     }
 
     return (
