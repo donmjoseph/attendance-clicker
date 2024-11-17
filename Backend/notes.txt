@@ -13,3 +13,12 @@ get correct answer for question
 get histogram data [3a 5b 7c 10d 100e]
 
 according to my tests, creating a database and table, then composing down and composing up, will still keep the database and table. This is good to know
+
+main table:
+- questionID: int non-unique
+- classID: uuid unique
+- className: String non-unique varchar(128)
+- questionTitle: String
+- answers[]: String
+- correctAnswer: int
+- img: optional path to image

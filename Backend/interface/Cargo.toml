@@ -1,7 +1,10 @@
 [package]
 name = "interface"
 version = "0.1.0"
+authors = ["Logan Meyers <theterrarian03@gmail.com>", "Timothy", "Don"]
+rust-version = "1.81"  # older versions may work
 edition = "2021"
+description = "The Backend for the SDC iClicker alternative project. Mangages Database and handles API requests."
 
 [dependencies]
 tokio = { version = "1.40.0", features = ["full"] }
