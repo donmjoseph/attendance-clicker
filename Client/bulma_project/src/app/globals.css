@@ -46,6 +46,27 @@ a {
   text-decoration: none;
 }
 
+/* global for button:
+  USE rem! rem = unit size relative to root font size of document, for
+  example, if the root font size (default font size) of a document is 16,
+  then 1rem uses 16 px, 2rem uses 2 * 16 px = 32px, and so on. 
+*/
+.class-button {
+  padding: 1rem 2rem; /* vertical size & horizontal size, respectively */
+  flex-direction: column;
+  width:15rem;
+  background-color: #1e1e1e;
+  color:aqua; /* changes text inside <p> tag in button*/
+}
+
+.custom-box {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap:1rem;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

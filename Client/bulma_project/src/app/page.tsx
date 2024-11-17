@@ -1,7 +1,16 @@
+'use client'
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const goToClasses = () => {
+    router.push('/makePages');
+  }
+
   return (
     <div className={styles.page}>
       <div className={styles.QNA}>
@@ -17,7 +26,7 @@ export default function Home() {
         </div>
       <div className={styles.rightsection}></div>
       </div>
-      <button className={`button is-light ${styles.submitButton}`}>Submit</button>
+      <button className={`button is-light ${styles.submitButton}`} onClick={goToClasses}>Submit</button>
       </div>
   );
 }
