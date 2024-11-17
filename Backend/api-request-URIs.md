@@ -7,6 +7,7 @@ GET v1/question/student-answers # gets all student answers to a question
 GET v1/db/healthcheck # checks health of DB
 GET v1/interface/healthcheck # checks health of interface script
 
+GET v1/question/all
 
 POST v1/student/answer
 POST v1/question/correct
