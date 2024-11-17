@@ -12,9 +12,17 @@ library.add(faBars);
 export default function Home() {
     const [menu, showMenu] = useState(false);
 
+    const router = useRouter();
+
+    const goToWaitingRoom = () => {
+      router.push('/CheckedIn');
+    }  
+
     const showDropdownItems = () => {
         showMenu(!menu);
     };
+
+
 
   return (
         <div>
@@ -38,7 +46,7 @@ export default function Home() {
     </div>
     <div className="box custom-box">
         <h2> In session</h2>
-        <button className='button class-button'>
+        <button className='button class-button' onClick={goToWaitingRoom}>
             <p> <FontAwesomeIcon icon="circle"/> CPTS 101 - Prof John Doe </p>
             <p>MWF 1:00 PM to 3:00 PM</p>
         </button>   
