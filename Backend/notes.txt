@@ -22,3 +22,20 @@ main table:
 - answers[]: String
 - correctAnswer: int
 - img: optional path to image
+
+-- create example --
+curl -X POST http://localhost:3000/create_question -H "Content-Type: application/json" -d '{
+    "question_id": 1,
+    "class_id": "550e8400-e29b-41d4-a716-446655440000",
+    "class_name": "Physics 101",
+    "question_title": "What is the speed of light?",
+    "answers": [1, 2, 3, 4],
+    "correct_answer": 3,
+    "created": "2024-11-16"
+}'
+
+-- delete example --
+curl -X POST http://localhost:3000/delete_question -H "Content-Type: application/json" -d '{
+    "question_id": 1,
+    "class_id": "550e8400-e29b-41d4-a716-446655440000"
+}'

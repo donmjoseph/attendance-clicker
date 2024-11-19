@@ -12,22 +12,24 @@ use axum::{
 };
 use sqlx::postgres::PgPool;
 
-use crate::schema::CreateClassSchema;
+use crate::schema::*;  // all schemas into scope, without a terribly long bracket list
 use serde_json::json;
 
 /* Health Checks and Basic Database Functions */
 
-pub async fn health_check_handler() -> impl IntoResponse {
-    println!("Health checker called!");
+pub async fn health_check_handler(State(pool): State<PgPool>) -> impl IntoResponse {
+    // Log health check call
+    println!("--[LOG]-- Health checker called!");
 
-    const MESSAGE: &str = "Backend is running! Database health unknown.";
-
-    let json_response = serde_json::json!({
-        "status": "success",
-        "message": MESSAGE
-    });
-
-    Json(json_response)
+    // Select an item to see if database is connected
+    if sqlx::query("SELECT 1")
+            .execute(&pool)
+            .await
+            .is_ok() {
+        Json(json!({"status": "success", "message": "Backend running! Database is connected!"}))
+    } else {
+        Json(json!({"stauts": "fail", "message": "Backend was running! But database is not connected."}))
+    }
 }
 
 pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
@@ -53,7 +55,7 @@ pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
 }
 
 /* V1 API HANDLES */
-pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<CreateClassSchema>) -> impl IntoResponse {
+pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<CreateQuestionSchema>) -> impl IntoResponse {
     // define the query to call
     let query = r#"
         INSERT INTO questions (question_id, class_id, class_name, question_title, answers, correct_answer, created)
@@ -72,8 +74,30 @@ pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<Create
         .execute(&pool)
         .await;
 
+    // based on result, return success or error json message
     match result {
         Ok(_) => Json(json!({"status": "success"})),
         Err(error) => Json(json!({"status": "error", "message": error.to_string()}))
+    }
+}
+
+pub async fn delete_question(State(pool): State<PgPool>, Json(body): Json<AccessQuestionSchema>) -> impl IntoResponse {
+    // define query to call
+    let query = r#"
+        DELETE FROM questions
+        WHERE question_id = $1 AND class_id = $2
+    "#;
+
+    // make the query and store the result
+    let result = sqlx::query(query)
+        .bind(body.question_id)
+        .bind(body.class_id)
+        .execute(&pool)
+        .await;
+
+    // based on result, return success or error json message
+    match result {
+        Ok(_) => Json(json!({"status": "success"})),
+        Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
     }
 }

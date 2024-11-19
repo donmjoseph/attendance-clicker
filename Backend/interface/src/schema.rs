@@ -10,7 +10,7 @@ pub struct StudentAccessSchema {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct CreateClassSchema {
+pub struct CreateQuestionSchema {
     pub question_id: i32,
     pub class_id: uuid::Uuid,
     pub class_name: String,
@@ -18,4 +18,10 @@ pub struct CreateClassSchema {
     pub answers: Vec<i32>,
     pub correct_answer: i32,
     pub created: chrono::NaiveDate
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AccessQuestionSchema {
+    pub question_id: i32,
+    pub class_id: uuid::Uuid
 }
