@@ -2,7 +2,6 @@ mod handler;
 mod schema;
 pub mod api_funcs;
 
-use handler::{create_question, setup_database};
 use sqlx::postgres::PgPoolOptions;  // Pool, Postgres
 use axum::{routing::{get, post}, Router};
 use dotenv::dotenv;
@@ -27,7 +26,7 @@ async fn main() {
     println!("--[INFO]-- Successfully connected to database, and created pool");
 
     // setup database with arbitrary, hard-coded data. Handle error if fail.
-    if let Err(e) = setup_database(&pool).await {
+    if let Err(e) = handler::setup_database(&pool).await {
         eprintln!("--[ERROR]-- Database setup failed. Error is as follows: {}", e);
         std::process::exit(1);
     }
