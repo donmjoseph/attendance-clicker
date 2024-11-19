@@ -2,9 +2,9 @@ mod handler;
 mod schema;
 pub mod api_funcs;
 
-use handler::setup_database;
+use handler::{create_question, setup_database};
 use sqlx::postgres::PgPoolOptions;  // Pool, Postgres
-use axum::{routing::get, Router};
+use axum::{routing::{get, post}, Router};
 use dotenv::dotenv;
 use std::net::SocketAddr;
 
@@ -38,6 +38,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(handler::health_check_handler))
         .route("/database_url", get(database_url))
+        .route("/create_question", post(handler::create_question))  // untested
         .with_state(pool);
 
     // make address for listener, then make listener on that address and port

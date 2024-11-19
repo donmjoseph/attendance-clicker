@@ -5,12 +5,14 @@ All the logic
 // use std::sync::Arc;
 
 use axum::{
-    // extract::{Path, Query, State},
+    extract::{Path, Query, State},
     // http::StatusCode,
     response::IntoResponse,
     Json,
 };
 use sqlx::postgres::PgPool;
+
+use crate::schema::CreateClassSchema;
 // use serde_json::json;
 
 /* Health Checks and Basic Database Functions */
@@ -51,3 +53,6 @@ pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
 }
 
 /* V1 API HANDLES */
+pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<CreateClassSchema>) -> impl IntoResponse {
+    Json(serde_json::json!({"status": "success"}))
+}
