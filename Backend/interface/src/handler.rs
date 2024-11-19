@@ -30,10 +30,22 @@ pub async fn health_check_handler() -> impl IntoResponse {
 
 pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
     let create_polls_table = r#"
-        CREATE TABLE IF NOT EXISTS polls (
-
+        CREATE TABLE IF NOT EXISTS questions (
+            question_id INTEGER NOT NULL PRIMARY KEY,
+            class_id UUID,
+            class_name VARCHAR(127) NOT NULL,
+            question_title VARCHAR(127) NOT NULL,
+            answers INTEGER[] NOT NULL,
+            correct_answer INTEGER,
+            created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     "#;
+
+    sqlx::query(create_polls_table).execute(pool).await?;
+
+    // id SERIAL PRIMARY KEY,
+    // name TEXT NOT NULL,
+    // created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
     Ok(())
 }

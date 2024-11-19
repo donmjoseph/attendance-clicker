@@ -1,5 +1,5 @@
 # Use rust:alpine as the base image to have Cargo available in the runtime
-FROM rust:alpine3.20 as builder
+FROM rust:alpine3.20 AS builder
 
 # Set the working directory inside the container
 WORKDIR /usr/src/interface
