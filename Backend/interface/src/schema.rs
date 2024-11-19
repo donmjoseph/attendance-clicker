@@ -11,11 +11,11 @@ pub struct StudentAccessSchema {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateClassSchema {
-    question_id: i32,
-    class_id: uuid::Uuid,
-    class_name: String,
-    question_title: String,
-    answers: Vec<i32>,
-    correct_answer: i32,
-    created: chrono::NaiveDate
+    pub question_id: i32,
+    pub class_id: uuid::Uuid,
+    pub class_name: String,
+    pub question_title: String,
+    pub answers: Vec<i32>,
+    pub correct_answer: i32,
+    pub created: chrono::NaiveDate
 }

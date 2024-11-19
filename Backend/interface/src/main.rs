@@ -37,7 +37,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(handler::health_check_handler))
         .route("/database_url", get(database_url))
-        .route("/create_question", post(handler::create_question))  // untested
+        .route("/create_question", post(handler::create_question))
         .with_state(pool);
 
     // make address for listener, then make listener on that address and port
