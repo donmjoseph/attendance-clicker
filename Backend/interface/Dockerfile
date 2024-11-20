@@ -1,19 +1,18 @@
-# Use rust:alpine as the base image to have Cargo available in the runtime
+# Use rust:alpine as the base image
 FROM rust:alpine3.20 AS builder
 
 # Set the working directory inside the container
 WORKDIR /usr/src/interface
 
 # Install dependencies
-# openssl-dev and pkgconfig required for sqlx, I believe
 RUN apk update --no-cache && \
     apk upgrade --no-cache && \
     apk add --no-cache build-base
 
-# Copy the entire source code (this includes Cargo.toml, Cargo.lock, and source files)
+# Copy the entire source code
 COPY . .
 
-# Fetch dependencies (this will now work since the source code is available)
+# Fetch dependencies
 RUN cargo fetch
 
 # Expose the necessary port
@@ -21,3 +20,4 @@ EXPOSE 3000
 
 # Command to start the application
 CMD ["cargo", "run"]
+

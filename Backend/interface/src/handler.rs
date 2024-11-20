@@ -47,10 +47,6 @@ pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
 
     sqlx::query(create_polls_table).execute(pool).await?;
 
-    // id SERIAL PRIMARY KEY,
-    // name TEXT NOT NULL,
-    // created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
     Ok(())
 }
 
@@ -100,4 +96,8 @@ pub async fn delete_question(State(pool): State<PgPool>, Json(body): Json<Access
         Ok(_) => Json(json!({"status": "success"})),
         Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
     }
+}
+
+pub async fn get_question_info(State(pool): State<PgPool>, Json(body): Json<AccessQuestionSchema>) -> impl IntoResponse {
+    Json(json!({"status": "success"}))
 }
