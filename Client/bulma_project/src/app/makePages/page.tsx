@@ -1,10 +1,16 @@
 'use client';
 import React, {useState} from 'react';
-import { useRouter } from "next/navigation";
+import { Provider, UseSelector, useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '@/lib/store';
+import { makeStore } from '@/lib/store';
+import StoreProvider from '@/StoreProvider';
+import { setFirstName, setLastName } from '@/lib/features/profile/profileSlice'; 
+import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { profile } from 'console';
 
 library.add(faCircle);
 library.add(faBars);
@@ -12,20 +18,37 @@ library.add(faBars);
 export default function Home() {
     const [menu, showMenu] = useState(false);
 
+    const store = makeStore();
+
+    const profileState = useSelector((state: RootState) => state.profile);
+    const dispatch = useDispatch<AppDispatch>();
+
     const router = useRouter();
 
     const goToWaitingRoom = () => {
       router.push('/CheckedIn');
     }  
 
+    const goToProfiles = () => {
+        router.push('/profiles');
+    }  
+  
+    const goToGrades = () => {
+        router.push('/studentgrade');
+    }  
+
     const showDropdownItems = () => {
         showMenu(!menu);
     };
 
-
-
   return (
+        
         <div>
+        <div>
+            <p>
+                Welcome: {profileState.firstName} {profileState.lastName}
+            </p>
+        </div>
         <div className="box custom-menu">
             <div className={`dropdown ${menu ? `is-active` : ''} is-right`} >
                 <div className="dropdown-trigger" >
@@ -36,9 +59,20 @@ export default function Home() {
                         </button>
                     <div className="dropdown-menu" id="dropdown-menu" role="menu">
                         <div className="dropdown-content">
-                            <a href="#" className="dropdown-item">Profile</a>
-                            <a href="#" className="dropdown-item">Settings</a>
-                            <a href="#" className="dropdown-item">Sign Out</a>
+                            <div className="box custom-box">
+                                <button className="class-button" onClick={goToProfiles}>
+                                    Profile
+                                </button>
+                                <button className="class-button">
+                                    Settings
+                                </button>
+                                <button className="class-button"  onClick={goToGrades}>
+                                    Grades
+                                </button>
+                                <button className="class-button">
+                                    Log out
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

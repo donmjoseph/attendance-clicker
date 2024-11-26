@@ -2,6 +2,12 @@
 import React, { useState } from 'react';
 import './LoginPage.module.css';
 import { useRouter } from "next/navigation";
+import { Provider } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setEmail, setFirstName, setLastName, setStudentId } from '@/lib/features/profile/profileSlice';
+import { AppDispatch } from '@/lib/store';
+import { Store } from '@reduxjs/toolkit';
+import { makeStore } from '@/lib/store';
 
 interface LoginFormValues {
   email: string;
@@ -12,7 +18,14 @@ const LoginPage: React.FC = () => {
 
   const router = useRouter();
 
+  const dispatch = useDispatch<AppDispatch>();
+
   const goToCourses= () => {
+
+    dispatch(setFirstName("Don"))
+    dispatch(setLastName("Jose"))
+    dispatch(setEmail("don.jose@wsu.edu"))
+    dispatch(setStudentId(1827572))
     router.push('/makePages');
   }  
   
@@ -96,7 +109,7 @@ const LoginPage: React.FC = () => {
           {errors.password && <div className="error-message">{errors.password}</div>}
         </div>
 
-        <button onClick={goToCourses} /*type="submit" className="login-btn" */>
+        <button onClick={goToCourses} type="submit" className="login-btn">
           Login
         </button>
       </form>
