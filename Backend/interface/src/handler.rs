@@ -10,10 +10,12 @@ use axum::{
     response::IntoResponse,
     Json,
 };
-use sqlx::postgres::PgPool;
+use chrono::NaiveDateTime;
+use sqlx::{Row, postgres::PgPool};
 
 use crate::schema::*;  // all schemas into scope, without a terribly long bracket list
 use serde_json::json;
+use uuid::Uuid;
 
 /* Health Checks and Basic Database Functions */
 
@@ -52,6 +54,8 @@ pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
 
 /* V1 API HANDLES */
 pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<CreateQuestionSchema>) -> impl IntoResponse {
+    println!("--[LOG]-- Create question callled!");
+    
     // define the query to call
     let query = r#"
         INSERT INTO questions (question_id, class_id, class_name, question_title, answers, correct_answer, created)
@@ -99,5 +103,34 @@ pub async fn delete_question(State(pool): State<PgPool>, Json(body): Json<Access
 }
 
 pub async fn get_question_info(State(pool): State<PgPool>, Json(body): Json<AccessQuestionSchema>) -> impl IntoResponse {
-    Json(json!({"status": "success"}))
+    println!("--[LOG]-- Get Question Called!");
+    
+    // define query to call
+    let query = r#"
+        SELECT * FROM questions
+        WHERE question_id = $1
+    "#;
+
+    // make the query and store the result
+    let result = sqlx::query(query)
+        .bind(body.question_id)
+        .fetch_one(&pool)
+        .await;
+
+    // based on the result, return success with the data or error json message
+    match result {
+        Ok(row) => {
+            let question = CreateQuestionSchema {
+                question_id: row.get::<i32, _>("question_id"),
+                class_id: row.get::<Uuid, _>("class_id"),
+                class_name: row.get::<String, _>("class_name"),
+                question_title: row.get::<String, _>("question_title"),
+                answers: row.get::<Vec<i32>, _>("answers"),
+                correct_answer: row.get::<i32, _>("correct_answer"),
+                created: row.get::<NaiveDateTime, _>("created"),
+            };
+            Json(json!({"status": "success", "question": question}))
+        },
+        Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
+    }
 }

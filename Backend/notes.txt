@@ -23,8 +23,8 @@ main table:
 - correctAnswer: int
 - img: optional path to image
 
--- create example --
-curl -X POST http://localhost:3000/create_question -H "Content-Type: application/json" -d '{
+-- create examples --
+curl -X POST 0.0.0.0:3000/create_question -H "Content-Type: application/json" -d '{
     "question_id": 1,
     "class_id": "550e8400-e29b-41d4-a716-446655440000",
     "class_name": "Physics 101",
@@ -34,8 +34,24 @@ curl -X POST http://localhost:3000/create_question -H "Content-Type: application
     "created": "2024-11-16"
 }'
 
+curl -X POST 0.0.0.0:3000/create_question -H "Content-Type: application/json" -d '{
+    "question_id": 2,
+    "class_id": "550e8400-e29b-41d4-a716-446655440000",
+    "class_name": "Physics 101",
+    "question_title": "When will the sun explode?",
+    "answers": [1, 2, 3, 4],
+    "correct_answer": 2,
+    "created": "2033-11-16"
+}'
+
+-- get example --
+curl -X GET 0.0.0.0:3000/get_question -H "Content-Type: application/json" -d '{
+    "question_id": 1,
+    "class_id": "550e8400-e29b-41d4-a716-446655440000"
+}'
+
 -- delete example --
-curl -X POST http://localhost:3000/delete_question -H "Content-Type: application/json" -d '{
+curl -X POST 0.0.0.0:3000/delete_question -H "Content-Type: application/json" -d '{
     "question_id": 1,
     "class_id": "550e8400-e29b-41d4-a716-446655440000"
 }'

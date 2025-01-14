@@ -39,6 +39,7 @@ async fn main() {
         .route("/database_url", get(database_url))
         .route("/create_question", post(handler::create_question))
         .route("/delete_question", post(handler::delete_question))
+        .route("/get_question", get(handler::get_question_info))
         .with_state(pool);
 
     // make address for listener, then make listener on that address and port

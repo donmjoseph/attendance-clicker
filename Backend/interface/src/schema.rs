@@ -17,7 +17,7 @@ pub struct CreateQuestionSchema {
     pub question_title: String,
     pub answers: Vec<i32>,
     pub correct_answer: i32,
-    pub created: chrono::NaiveDate
+    pub created: chrono::NaiveDateTime
 }
 
 #[derive(Serialize, Deserialize, Debug)]
