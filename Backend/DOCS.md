@@ -32,8 +32,10 @@ If you've never used the `make` build automation tool before, a quick 2-minute v
 In this project's case, there's a file `makefile` which defines some custom, pre-made macros/scripts that can be used to easily run, stop, and manage docker instances (and other things). Here are commands you can run (targets we've defined) and what they do:
 
 - `make` - runs the `all` target:
-- `make all` - run the `run_docker` target:
-- `make run_docker` - stops any already running containers, builds the containers, and starts the services
+- `make all` - run the `run` target:
+- `make run` - stops any already running containers, builds the containers, and starts the services
+- `make follow_logs` - follows the `backend-interface-1` 's logs
+- `make runf` - runs the `run` and then the `follow_logs` target
 - `make stop` - stops any running containers
 - `make clean` - removes cargo's target directory made inside the interface folder, when cargo builds the backend. May need to be ran with sudo if many errors occur
 - `make purge` - Removes (containers, volumes and network configs) related to the backend, from your computer. A sort of fresh start
