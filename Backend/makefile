@@ -1,15 +1,30 @@
-# by default, step and re-start the containers
-all: run_docker
+# make file documentation for reference:
+# https://www.gnu.org/software/make/manual/make.html#Errors
 
-# just stop the docker containers with `make stop`
+# by default, stop and re-start the containers
+all: run
+
+# stop containers, then re-build and re-start them
+run: stop
+	docker compose build --no-cache
+	docker compose up -d
+
+# follow `backend-intereface-1`'s log
+follow_logs:
+	docker logs --follow backend-interface-1
+
+# stop containers, restart, and follow `backend-intereface-1`'s log
+runf: run follow_logs
+
+# stop running containers
 stop:
 	docker compose down
 
-# stop containers, then build and re-start them
-run_docker:
-	docker compose down
-	docker compose build --no-cache
-	docker compose up -d
+# clean (remove) cargo's target directory for compiles,
+# if you need to do that for some reason
+# if you get a lot of errors, try running with sudo
+clean:
+	rm -rf interface/target/
 
 # completely remove containers, volumes, and networks
 purge:
@@ -21,6 +36,5 @@ purge:
 # !! CAREFUL !!
 #   This may cause unwanted side effects, like removing
 #   dependencies for other docker containers on your system.
-deep_purge:
-	docker compose down --volumes --remove-orphans
+deep_purge: purge
 	docker system prune --all --volumes --force

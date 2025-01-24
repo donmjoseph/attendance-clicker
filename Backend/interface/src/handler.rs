@@ -5,37 +5,132 @@ All the logic
 // use std::sync::Arc;
 
 use axum::{
-    // extract::{Path, Query, State},
+    extract::{Path, Query, State},
     // http::StatusCode,
     response::IntoResponse,
     Json,
 };
-use sqlx::postgres::PgPool;
-// use serde_json::json;
+use chrono::NaiveDateTime;
+use sqlx::{Row, postgres::PgPool};
+
+use crate::schema::*;  // all schemas into scope, without a terribly long bracket list
+use serde_json::json;
+use uuid::Uuid;
 
 /* Health Checks and Basic Database Functions */
 
-pub async fn health_check_handler() -> impl IntoResponse {
-    println!("Health checker called!");
+pub async fn health_check_handler(State(pool): State<PgPool>) -> impl IntoResponse {
+    // Log health check call
+    println!("--[LOG]-- Health checker called!");
 
-    const MESSAGE: &str = "Backend is running! Database health unknown.";
-
-    let json_response = serde_json::json!({
-        "status": "success",
-        "message": MESSAGE
-    });
-
-    Json(json_response)
+    // Select an item to see if database is connected
+    if sqlx::query("SELECT 1")
+            .execute(&pool)
+            .await
+            .is_ok() {
+        Json(json!({"status": "success", "message": "Backend running! Database is connected!"}))
+    } else {
+        Json(json!({"stauts": "fail", "message": "Backend was running! But database is not connected."}))
+    }
 }
 
 pub async fn setup_database(pool: &PgPool) -> Result<(), sqlx::Error> {
     let create_polls_table = r#"
-        CREATE TABLE IF NOT EXISTS polls (
-
+        CREATE TABLE IF NOT EXISTS questions (
+            question_id INTEGER NOT NULL PRIMARY KEY,
+            class_id UUID,
+            class_name VARCHAR(127) NOT NULL,
+            question_title VARCHAR(127) NOT NULL,
+            answers INTEGER[] NOT NULL,
+            correct_answer INTEGER,
+            created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     "#;
+
+    sqlx::query(create_polls_table).execute(pool).await?;
 
     Ok(())
 }
 
 /* V1 API HANDLES */
+pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<CreateQuestionSchema>) -> impl IntoResponse {
+    println!("--[LOG]-- Create question callled!");
+    
+    // define the query to call
+    let query = r#"
+        INSERT INTO questions (question_id, class_id, class_name, question_title, answers, correct_answer, created)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+    "#;
+
+    // make the query and store the result
+    let result = sqlx::query(query)
+        .bind(body.question_id)
+        .bind(body.class_id)
+        .bind(body.class_name)
+        .bind(body.question_title)
+        .bind(body.answers)
+        .bind(body.correct_answer)
+        .bind(body.created)
+        .execute(&pool)
+        .await;
+
+    // based on result, return success or error json message
+    match result {
+        Ok(_) => Json(json!({"status": "success"})),
+        Err(error) => Json(json!({"status": "error", "message": error.to_string()}))
+    }
+}
+
+pub async fn delete_question(State(pool): State<PgPool>, Json(body): Json<AccessQuestionSchema>) -> impl IntoResponse {
+    // define query to call
+    let query = r#"
+        DELETE FROM questions
+        WHERE question_id = $1 AND class_id = $2
+    "#;
+
+    // make the query and store the result
+    let result = sqlx::query(query)
+        .bind(body.question_id)
+        .bind(body.class_id)
+        .execute(&pool)
+        .await;
+
+    // based on result, return success or error json message
+    match result {
+        Ok(_) => Json(json!({"status": "success"})),
+        Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
+    }
+}
+
+pub async fn get_question_info(State(pool): State<PgPool>, Json(body): Json<AccessQuestionSchema>) -> impl IntoResponse {
+    println!("--[LOG]-- Get Question Called!");
+    
+    // define query to call
+    let query = r#"
+        SELECT * FROM questions
+        WHERE question_id = $1
+    "#;
+
+    // make the query and store the result
+    let result = sqlx::query(query)
+        .bind(body.question_id)
+        .fetch_one(&pool)
+        .await;
+
+    // based on the result, return success with the data or error json message
+    match result {
+        Ok(row) => {
+            let question = CreateQuestionSchema {
+                question_id: row.get::<i32, _>("question_id"),
+                class_id: row.get::<Uuid, _>("class_id"),
+                class_name: row.get::<String, _>("class_name"),
+                question_title: row.get::<String, _>("question_title"),
+                answers: row.get::<Vec<i32>, _>("answers"),
+                correct_answer: row.get::<i32, _>("correct_answer"),
+                created: row.get::<NaiveDateTime, _>("created"),
+            };
+            Json(json!({"status": "success", "question": question}))
+        },
+        Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
+    }
+}
