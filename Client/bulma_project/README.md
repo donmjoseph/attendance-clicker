@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+NOTE: There is a big here somewhere, if you encounter a bug when running npm i, these commands fix it:
+
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
+
+
 ## Getting Started
 
 First, run the development server:
