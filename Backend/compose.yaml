@@ -15,7 +15,7 @@ services:
     build:
       context: ./interface
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       - DATABASE_URL=postgres://admin:password1@db:5432/admin
     volumes:
