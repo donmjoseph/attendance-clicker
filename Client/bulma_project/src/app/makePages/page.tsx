@@ -41,6 +41,19 @@ export default function Home() {
         showMenu(!menu);
     };
 
+    const checkDatabase = async () => {
+        try {
+            const response = await fetch('http://localhost:3001');  // localhost should work, but try an ip address instead
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data); // Log the response data
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    };
+
   return (
         
         <div>
@@ -94,7 +107,7 @@ export default function Home() {
         <p>PHYS 104 - Prof Jack Doe </p>
         <p>Tue/Thurs 11:00 AM to 9:00 PM</p>
     </button>    
-    <button className='button class-button'>
+    <button className='button class-button' onClick={checkDatabase}>
         <p>CHEM 103 - Prof Jame Doe </p>
         <p>MWF 11:00 AM to 12:00 PM</p>
     </button>    
