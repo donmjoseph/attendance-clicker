@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import { Provider, UseSelector, useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '@/lib/store';
 import { makeStore } from '@/lib/store';
+import axios from 'axios';
 import StoreProvider from '@/StoreProvider';
 import { setFirstName, setLastName } from '@/lib/features/profile/profileSlice'; 
 import { useRouter, useSelectedLayoutSegment } from "next/navigation";
@@ -43,7 +44,7 @@ export default function Home() {
 
     const checkDatabase = async () => {
         try {
-            const response = await fetch('http://localhost:3001');  // localhost should work, but try an ip address instead
+            const response = await fetch('http://10.109.254.204:3001');  // localhost should work, but try an ip address instead
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -53,6 +54,17 @@ export default function Home() {
             console.error('There was a problem with the fetch operation:', error);
         }
     };
+
+    const testGetReq = async () => {
+          axios.get('http://10.109.254.204:3001/database_url')
+        .then(response => {
+          console.log(response.data); // Handle the response data
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
+    }
 
   return (
         
@@ -108,9 +120,12 @@ export default function Home() {
         <p>Tue/Thurs 11:00 AM to 9:00 PM</p>
     </button>    
     <button className='button class-button' onClick={checkDatabase}>
-        <p>CHEM 103 - Prof Jame Doe </p>
-        <p>MWF 11:00 AM to 12:00 PM</p>
+        <p>Test check database</p>
+    </button>
+    <button className='button class-button' onClick={testGetReq}>
+        <p>Test check database</p>
     </button>    
+    
     </div>
     </div>
     );
