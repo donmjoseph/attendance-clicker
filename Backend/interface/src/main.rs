@@ -3,10 +3,11 @@ mod schema;
 pub mod api_funcs;
 
 use sqlx::postgres::PgPoolOptions;  // Pool, Postgres
-use axum::{http::Method, routing::{get, post}, Router};
+use axum::{http::Method, routing::{get, post}, Router, Json};
 use dotenv::dotenv;
 use std::net::SocketAddr;
 use tower_http::cors::{Any, CorsLayer};
+use serde_json::json;
 
 #[tokio::main]
 async fn main() {
@@ -43,7 +44,7 @@ async fn main() {
     // creates a handler that routes 
     let app = Router::new()
         .route("/", get(handler::health_check_handler))
-        .route("/database_url", get(database_url))
+        .route("/database_url", get(([("content-type", "json")], Json(json!({"URL": database_url.to_string()})))))
         .route("/create_question", post(handler::create_question))
         .route("/delete_question", post(handler::delete_question))
         .route("/get_question", get(handler::get_question_info))
