@@ -28,9 +28,9 @@ pub async fn health_check_handler(State(pool): State<PgPool>) -> impl IntoRespon
             .execute(&pool)
             .await
             .is_ok() {
-        Json(json!({"status": "success", "message": "Backend running! Database is connected!"}))
+        ([("content-type", "json")], Json(json!({"status": "success", "message": "Backend running! Database is connected!"})))
     } else {
-        Json(json!({"stauts": "fail", "message": "Backend was running! But database is not connected."}))
+        ([("content-type", "json")], Json(json!({"status": "fail", "message": "Backend running! Database NOT connected."})))
     }
 }
 
@@ -76,8 +76,8 @@ pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<Create
 
     // based on result, return success or error json message
     match result {
-        Ok(_) => Json(json!({"status": "success"})),
-        Err(error) => Json(json!({"status": "error", "message": error.to_string()}))
+        Ok(_) => ([("content-type", "json")], Json(json!({"status": "success"}))),
+        Err(error) => ([("content-type", "json")], Json(json!({"status": "error", "message": error.to_string()})))
     }
 }
 
@@ -97,8 +97,8 @@ pub async fn delete_question(State(pool): State<PgPool>, Json(body): Json<Access
 
     // based on result, return success or error json message
     match result {
-        Ok(_) => Json(json!({"status": "success"})),
-        Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
+        Ok(_) => ([("content-type", "json")], Json(json!({"status": "success"}))),
+        Err(error) => ([("content-type", "json")], Json(json!({"status": "fail", "message": error.to_string()})))
     }
 }
 
@@ -129,8 +129,8 @@ pub async fn get_question_info(State(pool): State<PgPool>, Json(body): Json<Acce
                 correct_answer: row.get::<i32, _>("correct_answer"),
                 created: row.get::<NaiveDateTime, _>("created"),
             };
-            Json(json!({"status": "success", "question": question}))
+            ([("content-type", "json")], Json(json!({"status": "success", "question": question})))
         },
-        Err(error) => Json(json!({"status": "fail", "message": error.to_string()}))
+        Err(error) => ([("content-type", "json")], Json(json!({"status": "fail", "message": error.to_string()})))
     }
 }
