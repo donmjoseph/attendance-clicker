@@ -1,6 +1,6 @@
 mod handler;
 mod schema;
-pub mod api_funcs;
+mod api;
 
 use sqlx::postgres::PgPoolOptions;  // Pool, Postgres
 use axum::{http::Method, routing::{get, post}, Router, Json};
@@ -28,7 +28,11 @@ async fn main() {
     println!("--[INFO]-- Successfully connected to database, and created pool");
 
     // setup database with arbitrary, hard-coded data. Handle error if fail.
-    if let Err(e) = handler::setup_database(&pool).await {
+    // if let Err(e) = handler::setup_database(&pool).await {
+    //     eprintln!("--[ERROR]-- Database setup failed. Error is as follows: {}", e);
+    //     std::process::exit(1);
+    // }
+    if let Err(e) = api::startup_database(&pool).await {
         eprintln!("--[ERROR]-- Database setup failed. Error is as follows: {}", e);
         std::process::exit(1);
     }
@@ -45,9 +49,9 @@ async fn main() {
     let app = Router::new()
         .route("/", get(handler::health_check_handler))
         .route("/database_url", get(([("content-type", "json")], Json(json!({"URL": database_url.to_string()})))))
-        .route("/create_question", post(handler::create_question))
-        .route("/delete_question", post(handler::delete_question))
-        .route("/get_question", get(handler::get_question_info))
+        // .route("/create_question", post(handler::create_question))
+        // .route("/delete_question", post(handler::delete_question))
+        // .route("/get_question", get(handler::get_question_info))
         .layer(cors)
         .with_state(pool);
 
