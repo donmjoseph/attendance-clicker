@@ -4,35 +4,35 @@ All the logic
 
 // use std::sync::Arc;
 
-use axum::{
-    extract::{Path, Query, State},
-    // http::StatusCode,
-    response::IntoResponse,
-    Json,
-};
-use chrono::NaiveDateTime;
-use sqlx::{Row, postgres::PgPool};
+// use axum::{
+//     extract::{Path, Query, State},
+//     // http::StatusCode,
+//     response::IntoResponse,
+//     Json,
+// };
+// use chrono::NaiveDateTime;
+// use sqlx::{Row, postgres::PgPool};
 
-use crate::schema::*;  // all schemas into scope, without a terribly long bracket list
-use serde_json::json;
-use uuid::Uuid;
+// use crate::schema::*;  // all schemas into scope, without a terribly long bracket list
+// use serde_json::json;
+// use uuid::Uuid;
 
-/* Health Checks and Basic Database Functions */
+// /* Health Checks and Basic Database Functions */
 
-pub async fn health_check_handler(State(pool): State<PgPool>) -> impl IntoResponse {
-    // Log health check call
-    println!("--[LOG]-- Health checker called!");
+// pub async fn health_check_handler(State(pool): State<PgPool>) -> impl IntoResponse {
+//     // Log health check call
+//     println!("--[LOG]-- Health checker called!");
 
-    // Select an item to see if database is connected
-    if sqlx::query("SELECT 1")
-            .execute(&pool)
-            .await
-            .is_ok() {
-        ([("content-type", "json")], Json(json!({"status": "success", "message": "Backend running! Database is connected!"})))
-    } else {
-        ([("content-type", "json")], Json(json!({"status": "fail", "message": "Backend running! Database NOT connected."})))
-    }
-}
+//     // Select an item to see if database is connected
+//     if sqlx::query("SELECT 1")
+//             .execute(&pool)
+//             .await
+//             .is_ok() {
+//         ([("content-type", "json")], Json(json!({"status": "success", "message": "Backend running! Database is connected!"})))
+//     } else {
+//         ([("content-type", "json")], Json(json!({"status": "fail", "message": "Backend running! Database NOT connected."})))
+//     }
+// }
 
 /* V1 API HANDLES */
 // pub async fn create_question(State(pool): State<PgPool>, Json(body): Json<CreateQuestionSchema>) -> impl IntoResponse {

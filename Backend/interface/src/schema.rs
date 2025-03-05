@@ -52,7 +52,7 @@ pub struct AccessUserSchema {
 
 /* ----- Levels ----- */
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Levels {
+pub struct LevelsSchema {
     pub id: String,
     pub can_edit: bool,
     pub can_view_basic: bool,
@@ -62,5 +62,5 @@ pub struct Levels {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AccessLevelSchema {
-    pub level: String
+    pub id: String
 }

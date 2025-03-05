@@ -55,3 +55,32 @@ curl -X POST 0.0.0.0:3000/delete_question -H "Content-Type: application/json" -d
     "question_id": 1,
     "class_id": "550e8400-e29b-41d4-a716-446655440000"
 }'
+
+-- create level example --
+curl -X POST 0.0.0.0:3001/V1/create_level -H "Content-Type: application/json" -d '{
+    "id": "admin",
+    "can_edit": true,
+    "can_view_basic": true,
+    "can_view_all": true,
+    "can_participate": true
+}'
+
+curl -X POST 0.0.0.0:3001/V1/create_level -H "Content-Type: application/json" -d '{
+    "id": "student",
+    "can_edit": false,
+    "can_view_basic": true,
+    "can_view_all": false,
+    "can_participate": true
+}'
+
+curl -X GET 0.0.0.0:3001/V1/get_level -H "Content-Type: application/json" -d '{
+    "id": "admin"
+}'
+
+curl -X POST 0.0.0.0:3001/V1/delete_level -H "Content-Type: application/json" -d '{
+    "id": "admin"
+}'
+
+curl -X POST 0.0.0.0:3001/V1/delete_level -H "Content-Type: application/json" -d '{
+    "id": "student"
+}'

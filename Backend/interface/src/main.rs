@@ -1,9 +1,9 @@
-mod handler;
+// mod handler;
 mod schema;
 mod api;
 
 use sqlx::postgres::PgPoolOptions;  // Pool, Postgres
-use axum::{http::Method, routing::{get, post}, Router, Json};
+use axum::{http::Method, routing::{get, post, delete, put}, Router, Json};
 use dotenv::dotenv;
 use std::net::SocketAddr;
 use tower_http::cors::{Any, CorsLayer};
@@ -47,8 +47,18 @@ async fn main() {
 
     // creates a handler that routes 
     let app = Router::new()
-        .route("/", get(handler::health_check_handler))
+        // basic stuff
+        .route("/", get(api::check_connected))
         .route("/database_url", get(([("content-type", "json")], Json(json!({"URL": database_url.to_string()})))))
+        // creations
+        .route("/V1/create_level", post(api::levels_table::create_level))
+        
+        // getters
+        .route("/V1/get_level", get(api::levels_table::get_level_info))
+
+        // deleters
+        .route("/V1/delete_level", post(api::levels_table::delete_level))
+
         // .route("/create_question", post(handler::create_question))
         // .route("/delete_question", post(handler::delete_question))
         // .route("/get_question", get(handler::get_question_info))
